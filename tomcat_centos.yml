@@ -1,6 +1,6 @@
 ---
 - name: tomcat install
-  hosts: all
+  hosts: localhost
   become: yes
   tasks:
   - name: Install OpenJDK
@@ -19,14 +19,17 @@
       dest: /opt
       remote_src: yes
 
+  - name: remove tar file
+    file:
+      state: absent
+      path: /opt/apache-tomcat-9.0.62.tar.gz
+
   - name: start tomcat services
     shell: nohup /opt/apache-tomcat-9.0.62/bin/startup.sh
 
   - name: Enable firewalld
     service: name=firewalld state=started enabled=yes
-    
   - name: Allow port 8080
     command: firewall-cmd --permanent --add-port=8080/tcp
-    
   - name: Bounce firewalld
     command: firewall-cmd --reload

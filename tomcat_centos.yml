@@ -29,7 +29,9 @@
 
   - name: Enable firewalld
     service: name=firewalld state=started enabled=yes
+    
   - name: Allow port 8080
     command: firewall-cmd --permanent --add-port=8080/tcp
+    
   - name: Bounce firewalld
     command: firewall-cmd --reload
